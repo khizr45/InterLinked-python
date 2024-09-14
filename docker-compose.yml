@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  cv-to-json:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      - NAME=World
+    volumes:
+      - .:/app
+    command: ["python", "cv_to_json.py"]

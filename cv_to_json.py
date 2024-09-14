@@ -45,4 +45,4 @@ def cv_to_json():
     return jsonify({'message': 'Invalid file type, please upload a PDF'}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=8000,debug=True)
