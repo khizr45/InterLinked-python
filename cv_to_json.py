@@ -34,7 +34,7 @@ def cv_to_json():
         # Use `generate_content`
         prompt = (
             f"Convert this CV to JSON and keep the following fields: education, "
-            f"experience, skills, projects, technical_skills and keep other details at top of json as well but always keep these fields and just return json with one curly brackets and donot break down tecnical skills further. The CV text is: {extracted_text}"
+            f"experience, skills, projects, technical_skills and keep other details at top of json as well but always keep these fields and just return json with one curly brackets and donot break down tecnical skills further into categories. The CV text is: {extracted_text}"
         )
         
         response = model.generate_content(prompt)
