@@ -2,6 +2,7 @@ import google.generativeai as genai
 import PyPDF2
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import json
 
 app = Flask(__name__)
 
@@ -33,14 +34,16 @@ def cv_to_json():
         # Use `generate_content`
         prompt = (
             f"Convert this CV to JSON and keep the following fields: education, "
-            f"experience, skills, projects, technical_skills and keep other details at top of json as well but always keep these fields. The CV text is: {extracted_text}"
+            f"experience, skills, projects, technical_skills and keep other details at top of json as well but always keep these fields and just return json with one curly brackets and donot break down tecnical skills further. The CV text is: {extracted_text}"
         )
         
         response = model.generate_content(prompt)
 
         print(response.text)
+
+        response_json = json.loads(response.text)
         
-        return jsonify(response.text), 200
+        return jsonify(response_json), 200
 
     return jsonify({'message': 'Invalid file type, please upload a PDF'}), 400
 
