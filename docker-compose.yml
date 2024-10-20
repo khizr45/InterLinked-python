@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 32a544af70d8c0f1c4a2ddbe4343d7e5b71a61c8
 services:
   cv-to-json:
     build:
