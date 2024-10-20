@@ -1,5 +1,5 @@
 import google.generativeai as genai
-import PyPDF2
+import pdfplumber
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import json
@@ -8,10 +8,11 @@ app = Flask(__name__)
 
 CORS(app)
 
-def extract_text_from_pdf(reader):
-    text = ""
-    for page in range(len(reader.pages)):
-        text += reader.pages[page].extract_text() or ''  # Safeguard in case no text is extracted
+def extract_text_from_pdf(file):
+    with pdfplumber.open(file) as pdf:
+        text = ""
+        for page in pdf.pages:
+            text += page.extract_text()
     return text
 
 @app.route('/api/cv-to-json', methods=['POST'])
@@ -22,8 +23,11 @@ def cv_to_json():
     file = request.files['file']
 
     if file and file.filename.endswith('.pdf'):
-        reader = PyPDF2.PdfReader(file)
-        extracted_text = extract_text_from_pdf(reader)
+        extracted_text = extract_text_from_pdf(file)
+        print("============================TEXT OF CV ====================================")
+        print(extracted_text)
+
+        model = "name: string; email: string; phone: string; objective?: string; education: { degree: string; institution: string; year?: string; cgpa?: string; }[]; experience: { company: string;title: string; description: string; duration: string; }[]; github?: string; projects?: { name: string; description: string; technologies: string; }[]; skills: string[]; technical_skills?: string[];"
         
         # Google PaLM model API configuration
         api_key = 'AIzaSyCf77ZpJx1d8fmexr2an5SQ-qAKSL3GZDk'
@@ -33,8 +37,10 @@ def cv_to_json():
         
         # Use `generate_content`
         prompt = (
-            f"Convert this CV to JSON and keep the following fields: education, "
-            f"experience, skills, projects, technical_skills and keep other details at top of json as well but always keep these fields and just return json with one curly brackets and donot break down tecnical skills further into categories. The CV text is: {extracted_text}"
+           "Convert this CV to JSON using the following fields: name, email, phone, objective, education (degree, institution, year, cgpa), "
+            "experience (company, title, description, duration), github, projects (name, description, technologies), skills [], technical_skills []. "
+            "If any field is not mentioned in the CV, leave it empty. "
+    "       Only return the JSON object with no additional text. The CV text is: ." + extracted_text
         )
         
         response = model.generate_content(prompt)
