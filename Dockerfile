@@ -17,4 +17,4 @@ EXPOSE 8000
 ENV NAME World
 
 # Run app.py when the container launches
-CMD ["python", "cv_to_json.py"]
+CMD ["python", "routes.py"]

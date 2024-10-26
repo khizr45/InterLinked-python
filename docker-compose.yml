@@ -1,5 +1,5 @@
 services:
-  cv-to-json:
+  routes:
     build:
       context: .
     ports:
@@ -10,4 +10,4 @@ services:
     tty : true
     volumes:
       - .:/app
-    command: ["python", "cv_to_json.py"]
+    command: ["python", "routes.py"]

@@ -3,10 +3,8 @@ import pdfplumber
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import json
-
-app = Flask(__name__)
-
-CORS(app)
+import os
+from dotenv import load_dotenv
 
 def extract_text_from_pdf(file):
     with pdfplumber.open(file) as pdf:
@@ -15,22 +13,13 @@ def extract_text_from_pdf(file):
             text += page.extract_text()
     return text
 
-@app.route('/api/cv-to-json', methods=['POST'])
-def cv_to_json():
-    if 'file' not in request.files:
-        return jsonify({'message': 'File not found'}), 400
 
-    file = request.files['file']
-
-    if file and file.filename.endswith('.pdf'):
+def cv_to_json(file):
+        load_dotenv()
         extracted_text = extract_text_from_pdf(file)
-        print("============================TEXT OF CV ====================================")
-        print(extracted_text)
-
-        model = "name: string; email: string; phone: string; objective?: string; education: { degree: string; institution: string; year?: string; cgpa?: string; }[]; experience: { company: string;title: string; description: string; duration: string; }[]; github?: string; projects?: { name: string; description: string; technologies: string; }[]; skills: string[]; technical_skills?: string[];"
         
         # Google PaLM model API configuration
-        api_key = 'AIzaSyCf77ZpJx1d8fmexr2an5SQ-qAKSL3GZDk'
+        api_key = os.getenv('API_KEY')
         genai.configure(api_key=api_key)
         
         model = genai.GenerativeModel(model_name="gemini-1.5-flash")
@@ -45,13 +34,7 @@ def cv_to_json():
         
         response = model.generate_content(prompt)
 
-        print(response.text)
-
         response_json = json.loads(response.text)
         
-        return jsonify(response_json), 200
+        return response_json
 
-    return jsonify({'message': 'Invalid file type, please upload a PDF'}), 400
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=8000,debug=True)
