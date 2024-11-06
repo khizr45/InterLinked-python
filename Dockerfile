@@ -7,10 +7,14 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy wheelhouse folder and install pre-built wheels
+COPY wheelhouse /app/wheelhouse
 
-# Make port 80 available to the world outside this container
+# Install pre-built wheels first, then install the remaining dependencies from requirements.txt
+RUN pip install --no-index --find-links=/app/wheelhouse torch==2.5.1 sentence_transformers==3.2.1 && \
+    pip install --default-timeout=1000 --no-cache-dir -r requirements.txt
+
+# Make port 8000 available to the world outside this container
 EXPOSE 8000
 
 # Define environment variable
