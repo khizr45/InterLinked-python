@@ -12,7 +12,7 @@ COPY wheelhouse /app/wheelhouse
 
 # Install pre-built wheels first, then install the remaining dependencies from requirements.txt
 RUN pip install --no-index --find-links=/app/wheelhouse torch==2.5.1 sentence_transformers==3.2.1 && \
-    pip install --default-timeout=1000 --no-cache-dir -r requirements.txt
+ pip install --default-timeout=1000 --no-cache-dir -r requirements.txt
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000

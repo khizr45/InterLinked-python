@@ -98,7 +98,7 @@ candidate_js = {
 }
 
 def cvRanking(job_json , candidate_json):
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    model = SentenceTransformer('./my_sentence_transformer')
     # Extract relevant job fields
     job_title = job_json["title"]
     job_domain = job_json["job_domain"]
