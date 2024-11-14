@@ -26,15 +26,19 @@ def cv_to_json(file):
         
         # Use `generate_content`
         prompt = (
-           "Convert this CV to JSON using the following fields: name, email, phone, objective, education (degree, institution, year, cgpa), "
+            "Convert this CV to JSON using the following fields: name, email, phone, objective, education (degree, institution, year, cgpa), "
             "experience (company, title, description, duration), github, projects (name, description, technologies), skills [], technical_skills []. "
             "If any field is not mentioned in the CV, leave it empty. "
-    "       Only return the JSON object with no additional text. The CV text is: ." + extracted_text
+            "Return only a valid JSON object that can be parsed directly by json.loads without any additional text and only curly braces of json object and no other thing. The CV text is: " + extracted_text
         )
+
         
         response = model.generate_content(prompt)
 
-        response_json = json.loads(response.text)
+        start_index = response.text.find('{')
+        end_index = response.text.rfind('}') + 1
+
+        response_json = json.loads(response.text[start_index:end_index])
         
         return response_json
 
