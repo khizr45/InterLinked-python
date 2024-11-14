@@ -7,6 +7,10 @@ app = Flask(__name__)
 
 CORS(app)
 
+@app.route('/')
+def initial():
+    return "hello"
+
 @app.route('/api/cv-to-json', methods=['POST'])
 def cvToJson():
     if 'file' not in request.files:
