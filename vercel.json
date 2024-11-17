@@ -1,9 +1,21 @@
 {
-    "version":2,
-    "builds":[
-        {"src":"routes.py" , "use":"@vercel/python"}
+    "version": 2,
+    "builds": [
+      {
+        "src": "routes.py",
+        "use": "@vercel/python"
+      }
     ],
-    "routes":[
-        {"src":"/(.*)","dest":"routes.py"}
+    "functions": {
+      "routes.py": {
+        "maxDuration": 900
+      }
+    },
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "routes.py"
+      }
     ]
-}
+  }
+  
