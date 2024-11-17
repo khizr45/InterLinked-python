@@ -1,15 +1,9 @@
 {
     "version":2,
     "builds":[
-        {"src":"routes.py" , "use":"@vercel/python"}
+        {"src":"routes.py" , "use":"@vercel/python","memory":"720mb"}
     ],
     "routes":[
         {"src":"/(.*)","dest":"router.py"}
-    ],
-    "functions": {
-    "api/*.py": {
-      "memory": 512,
-      "maxDuration": 10
-    }
-  }
+    ]
 }
