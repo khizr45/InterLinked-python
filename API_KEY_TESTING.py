@@ -35,6 +35,80 @@ job_json = {
         ]
     }
 
+candidate_json = {
+    "education": [
+        {
+            "cgpa": "2.8",
+            "degree": "Bachelors in Computer Science",
+            "institution": "FAST NUCES",
+            "year": "2025"
+        }
+    ],
+    "email": "nasiruddinabubakar@gmail.com",
+    "experience": [
+        {
+            "company": "Trization LLC",
+            "description": "I was managing the landing website for the company.",
+            "duration": "june 2023 - december 2023",
+            "title": "Junior frontend developer"
+        }
+    ],
+    "github": "https://github.com/nasiruddinabubakar",
+    "name": "NASIRUDDIN ABUBAKAR",
+    "objective": "A full stack developer, ready to make people's lives easier",
+    "phone": "+923212120428",
+    "projects": [
+        {
+            "description": "Developed SnapGram, an Instagram clone, using React for the frontend and integrated it with the powerful Appwrite backend on the cloud. SnapGram features functionalities such as uploading photos, following other users, and liking posts. Leveraging Appwrite's cloud services, the application ensures efficient data storage and retrieval.",
+            "name": "Social Media App",
+            "technologies": [
+                "React",
+                "Appwrite"
+            ]
+        },
+        {
+            "description": "Developed a comprehensive cargo shipping management system using React for the frontend and Node.js with Express for the backend. The system enables companies to efficiently manage their shipping operations, including adding and viewing ships, tracking orders, and analyzing shipping summaries. I implemented user authentication for secure access and integrated APIs for real-time data updates. The project showcases my proficiency in full-stack development, utilizing modern technologies to create a robust and user-friendly solution. It also demonstrates my skills in handling data, designing intuitive user interfaces, and ensuring the security and integrity of sensitive information. This project reflects my commitment to delivering high-quality software solutions that meet business needs and user expectations.",
+            "name": "ShippinInit",
+            "technologies": [
+                "React",
+                "Node.js",
+                "Express"
+            ]
+        },
+        {
+            "description": "A blog sharing application crafted in C. The application allows users to share and engage with blog posts in a streamlined manner. With a focus on implementing robust data structures, such as linked lists and arrays, the application efficiently manages and retrieves blog content.",
+            "name": "E-Baithak",
+            "technologies": [
+                "C"
+            ]
+        },
+        {
+            "description": "Developed a complete School Management System on C using Object Oriented Concepts. The software allows students to view their marks and attendance, the teacher can mark attendance and upload results, the administrator can view and add new classes.",
+            "name": "School Management System",
+            "technologies": [
+                "C"
+            ]
+        }
+    ],
+    "skills": [
+        "Html",
+        "CSS",
+        "JavaScript",
+        "Typescript",
+        "ReactJS",
+        "NodeJs",
+        "MySQL",
+        "ShadCN"
+    ],
+    "technical_skills": []
+}
+weights = {
+        "title": 0.20,
+        "requirement": 0.40,
+        "description": 0.35,
+        "domain": 0.05
+    }
+
 api_key = os.getenv('API_KEY')
 genai.configure(api_key=api_key)
 
@@ -49,6 +123,10 @@ prompt = (
     f"Now tell me how should I break down scaling total of 1 between these 4 catgories for provided job description."
     f"Just return the json not any other thing, containg the key and value of scaling of all categories."
     f"job description: {job_json}"
+    f"candiate cv: {candidate_json}"
+    f"do the ranking based on semantic matching."
+    f"weight of each type of ranking: {weights}"
+    f"also add overall similarity in the json object according to weights of each type of ranking."
 )
 
 response = model.generate_content(prompt)
